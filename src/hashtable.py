@@ -44,6 +44,22 @@ class HashTable:
 
 
     def insert(self, key, value):
+
+        index = self._hash_mod(key)
+
+        # self.storage[index] = value
+
+        node = self.storage[index] 
+
+        if node is None:
+            self.storage[index] = LinkedPair(key, value)
+            return
+
+        while node.next is not None:
+            node = node.next
+        
+        node.next = LinkedPair(key, value)
+
         '''
         Store the value with the given key.
 
@@ -51,6 +67,7 @@ class HashTable:
 
         Fill this in.
         '''
+
         pass
 
 
@@ -63,7 +80,29 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        index = self._hash_mod(key)
+
+        node = self.storage[index]
+
+        if node is None:
+            print("This key is not found!")
+            return
+        else:
+            if node.key == key:
+                if node.next: 
+                    node = node.next
+                else:
+                    node = None
+            
+            while node.next is not None:
+                next_node = node.next
+
+                if next_node.key == key:
+                    if next_node.next:
+                        node.next = next_node.next
+                    else:
+                        node.next = None
+                node = next_node
 
 
     def retrieve(self, key):
@@ -74,7 +113,17 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        index = self._hash_mod(key)
+
+        node = self.storage[index]
+
+        if node is None:
+            return None
+
+        while node is not None and node.key != key:
+            node = node.next
+            
+        return node.value
 
 
     def resize(self):
