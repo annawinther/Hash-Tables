@@ -13,6 +13,7 @@ class HashTable:
     that accepts string keys
     '''
     def __init__(self, capacity):
+        self.count = 0
         self.capacity = capacity  # Number of buckets in the hash table
         self.storage = [None] * capacity
 
@@ -34,7 +35,6 @@ class HashTable:
         '''
         pass
 
-
     def _hash_mod(self, key):
         '''
         Take an arbitrary key and return a valid integer index
@@ -45,20 +45,21 @@ class HashTable:
 
     def insert(self, key, value):
 
+        if self.count >= self.capacity:
+            self.resize()
+        
         index = self._hash_mod(key)
 
-        # self.storage[index] = value
+        current_node = self.storage[index] 
 
-        node = self.storage[index] 
-
-        if node is None:
+        if current_node is None:
             self.storage[index] = LinkedPair(key, value)
             return
 
-        while node.next is not None:
-            node = node.next
+        while current_node.next is not None:
+            current_node = current_node.next
         
-        node.next = LinkedPair(key, value)
+        current_node.next = LinkedPair(key, value)
 
         '''
         Store the value with the given key.
@@ -80,80 +81,25 @@ class HashTable:
 
         Fill this in.
         '''
-        # index = self._hash_mod(key)
-
-        # node = self.storage[index]
-
-        # if node is None:
-        #     print("This key is not found!")
-        #     return
-
-        # # if node.key == key:
-        # #     if node.next: 
-        # #         node = node.next
-        # #     else:
-        # #         node = None
-
-        # while node is not None and node.key != key:
-        #     node = node.next
-        
-        # node = None
-        # # if node.key == key:
-        # #     if node.next: 
-        # #         node = node.next
-        # #     else:
-        # #         node = None
         index = self._hash_mod(key)
 
         current_node = self.storage[index]
 
         if current_node is None:
             print("This key is not found!")
-            return
+
         else:
             if current_node.key == key or current_node.next is None:
                 self.storage[index] = current_node.next
-                return
+
             else:
                 while current_node is not None:
                     next_node = current_node.next
 
                     if next_node.key == key:
                       current_node.next = next_node.next
-                      return
+
                     current_node = current_node.next
-
-
-        # index = self._hash_mod(key)
-        # # check to see if the value at the index is not None
-        # if self.storage[index] is not None:
-        #     # set the current pair to the head of the linked list
-        #     current_pair = self.storage[index]
-        #     # if current pair key == key or there is no next pair, set the current index to current_pair next
-        #     if current_pair.key == key or current_pair.next is None:
-        #         self.storage[index] = current_pair.next
-        #         # decrement the count
-        #         # self.items -= 1
-        #         return 
-        #     # otherwise
-        #     else:
-        #         # loop through the linked list
-        #         while current_pair is not None:
-        #             # let next pair = current pair next
-        #             next_pair = current_pair.next
-        #             # if next pair key == key
-        #             if next_pair.key == key:
-        #                 # set current pair next to next pair next
-        #                 current_pair.next = next_pair.next
-        #                 # decrement the count
-        #                 # self.items -= 1
-        #                 return 
-        #             # set current pair to current pair next
-        #             current_pair = current_pair.next
-        # # otherwise, print a warning
-        # else:
-        #     print("No match for that key!")
-
 
     def retrieve(self, key):
         '''
@@ -165,15 +111,15 @@ class HashTable:
         '''
         index = self._hash_mod(key)
 
-        node = self.storage[index]
+        current_node = self.storage[index]
 
-        if node is None:
+        if current_node is None:
             return None
 
-        while node is not None and node.key != key:
-            node = node.next
+        while current_node is not None and current_node.key != key:
+            current_node = current_node.next
             
-        return node.value
+        return current_node.value
 
 
     def resize(self):
@@ -183,7 +129,26 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+
+        new_storage = [None] * self.capacity
+
+        # Copy old items to new storage
+        for i in range(0, len(self.storage)):
+            new_storage[i] = self.storage[i]
+
+        # Point storage to the new storage
+        self.storage = [None] * self.capacity * 2
+
+        self.capacity *= 2
+
+        for i in new_storage:
+            if i is not None:
+                node = i
+                while node.next is not None:
+                    self.insert(node.key, node.value)
+                    node = node.next
+                self.insert(node.key, node.value)
+        
 
 
 
