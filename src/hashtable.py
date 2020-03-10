@@ -80,29 +80,79 @@ class HashTable:
 
         Fill this in.
         '''
+        # index = self._hash_mod(key)
+
+        # node = self.storage[index]
+
+        # if node is None:
+        #     print("This key is not found!")
+        #     return
+
+        # # if node.key == key:
+        # #     if node.next: 
+        # #         node = node.next
+        # #     else:
+        # #         node = None
+
+        # while node is not None and node.key != key:
+        #     node = node.next
+        
+        # node = None
+        # # if node.key == key:
+        # #     if node.next: 
+        # #         node = node.next
+        # #     else:
+        # #         node = None
         index = self._hash_mod(key)
 
-        node = self.storage[index]
+        current_node = self.storage[index]
 
-        if node is None:
+        if current_node is None:
             print("This key is not found!")
             return
         else:
-            if node.key == key:
-                if node.next: 
-                    node = node.next
-                else:
-                    node = None
-            
-            while node.next is not None:
-                next_node = node.next
+            if current_node.key == key or current_node.next is None:
+                self.storage[index] = current_node.next
+                return
+            else:
+                while current_node is not None:
+                    next_node = current_node.next
 
-                if next_node.key == key:
-                    if next_node.next:
-                        node.next = next_node.next
-                    else:
-                        node.next = None
-                node = next_node
+                    if next_node.key == key:
+                      current_node.next = next_node.next
+                      return
+                    current_node = current_node.next
+
+
+        # index = self._hash_mod(key)
+        # # check to see if the value at the index is not None
+        # if self.storage[index] is not None:
+        #     # set the current pair to the head of the linked list
+        #     current_pair = self.storage[index]
+        #     # if current pair key == key or there is no next pair, set the current index to current_pair next
+        #     if current_pair.key == key or current_pair.next is None:
+        #         self.storage[index] = current_pair.next
+        #         # decrement the count
+        #         # self.items -= 1
+        #         return 
+        #     # otherwise
+        #     else:
+        #         # loop through the linked list
+        #         while current_pair is not None:
+        #             # let next pair = current pair next
+        #             next_pair = current_pair.next
+        #             # if next pair key == key
+        #             if next_pair.key == key:
+        #                 # set current pair next to next pair next
+        #                 current_pair.next = next_pair.next
+        #                 # decrement the count
+        #                 # self.items -= 1
+        #                 return 
+        #             # set current pair to current pair next
+        #             current_pair = current_pair.next
+        # # otherwise, print a warning
+        # else:
+        #     print("No match for that key!")
 
 
     def retrieve(self, key):
