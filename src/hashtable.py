@@ -44,9 +44,17 @@ class HashTable:
 
 
     def insert(self, key, value):
+        '''
+        Store the value with the given key.
+
+        Hash collisions should be handled with Linked List Chaining.
+
+        Fill this in.
+        '''
 
         if self.count >= self.capacity:
             self.resize()
+            return
         
         index = self._hash_mod(key)
 
@@ -60,17 +68,6 @@ class HashTable:
             current_node = current_node.next
         
         current_node.next = LinkedPair(key, value)
-
-        '''
-        Store the value with the given key.
-
-        Hash collisions should be handled with Linked List Chaining.
-
-        Fill this in.
-        '''
-
-        pass
-
 
 
     def remove(self, key):
@@ -130,25 +127,15 @@ class HashTable:
         Fill this in.
         '''
 
-        new_storage = [None] * self.capacity
-
-        # Copy old items to new storage
-        for i in range(0, len(self.storage)):
-            new_storage[i] = self.storage[i]
-
-        # Point storage to the new storage
-        self.storage = [None] * self.capacity * 2
-
         self.capacity *= 2
+        store = self.storage[:]
+        self.storage = [None] * self.capacity
 
-        for i in new_storage:
-            if i is not None:
-                node = i
-                while node.next is not None:
-                    self.insert(node.key, node.value)
-                    node = node.next
+        for i in store:
+             node = i
+             while node is not None:
                 self.insert(node.key, node.value)
-        
+                node = node.next
 
 
 
