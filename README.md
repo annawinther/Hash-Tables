@@ -84,7 +84,7 @@ Due to this performance degradation, most languages, such as Python, will automa
 
 Your assignment is to implement a hash table in Python. You should be able to insert, read, and delete elements and handle hash collisions with linked list chaining. You should be able to insert an arbitrary amount of elements into your hash table, regardless of storage size, and read them back without any data loss. You should also implement a resizing function that doubles the size of your hash table and copies all elements into the new data structure.
 
-Run your code by typing `python hashtable.py`.
+Run your code by typing `python hashtable.py`. 
 
 Run tests by typing `python test_hashtable.py`.
 
